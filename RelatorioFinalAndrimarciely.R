@@ -85,6 +85,15 @@ print(dados_repolhos)
 
 print("Moda")
 
+# A obtenção da moda através do comando abaixo não satisfez por ter amostra multimodal
+# na variável VitC
+
+freq_peso <- sort(table(repolhos$VitC), decreasing = TRUE)
+freq_peso[1]
+
+# Portanto foi utilizada outro metodo a seguir
+
+
 # MODA VARIÁVEL PESO
 
 #Lista todos os valores da variável Peso de repolhos e com qual frequencia aparecem no conjunto
@@ -128,35 +137,158 @@ repolhos_c52 <- subset.data.frame(repolhos, repolhos$Cult == "c52", select = c("
 
 print(repolhos_c52)
 
+dados_repolhos_c39 <- data.frame(row.names = c("Peso", "VitC"))
+dados_repolhos_c52 <- data.frame(row.names = c("Peso", "VitC"))
 
 
-#Histograma
+# RESUMO DE DADOS DOS DOIS GRUPOS DE CULTIVO DE REPOLHO
 
-classes <- table(cut_width(repolhos$VitC, 10))
-cbind(classes)
-hist(classes)
+# RESUMO DE C39
+
+# MÉDIA
+
+dados_repolhos_c39$Media <- c(mean(repolhos_c39$Peso),
+                              mean(repolhos_c39$VitC))
+
+# MEDIANA
+
+dados_repolhos_c39$Mediana <- c(median(repolhos_c39$Peso, na.rm = FALSE),
+                                median(repolhos_c39$VitC, na.rm = FALSE))
+
+# MÍNIMO
+
+dados_repolhos_c39$Minimo <- c(min(repolhos_c39$Peso),
+                               min(repolhos_c39$VitC))
+
+# MÁXIMO
+dados_repolhos_c39$Maximo <- c(max(repolhos_c39$Peso),
+                               max(repolhos_c39$VitC))
+
+# AMPLITUDE
+
+dados_repolhos_c39$Amplitude <- c(max(repolhos_c39$Peso) - min(repolhos_c39$Peso),
+                                  max(repolhos_c39$VitC) - min(repolhos_c39$VitC))
+
+# VARIÂNCIA
+dados_repolhos_c39$Variancia <- c(var(repolhos_c39$Peso),
+                                  var(repolhos_c39$VitC))
+
+# DESVIO PADRÃO
+dados_repolhos_c39$Desvio.Padrao <- c(sd(repolhos_c39$Peso),
+                                      sd(repolhos_c39$VitC))
+
+# COEFICIENTE DE VARIAÇÃO
+
+dados_repolhos_c39$Coef.Variacao <- c((sd(repolhos_c39$Peso)*100)/mean(repolhos_c39$Peso),
+                                      (sd(repolhos_c39$VitC)*100)/mean(repolhos_c39$VitC))
+
+# FIM RESUMO C39
+
+# RESUMO DE C52
+
+# MÉDIA
+
+dados_repolhos_c52$Media <- c(mean(repolhos_c52$Peso),
+                              mean(repolhos_c52$VitC))
+
+# MEDIANA
+
+dados_repolhos_c52$Mediana <- c(median(repolhos_c52$Peso, na.rm = FALSE),
+                                median(repolhos_c52$VitC, na.rm = FALSE))
+
+# MÍNIMO
+
+dados_repolhos_c52$Minimo <- c(min(repolhos_c52$Peso),
+                               min(repolhos_c52$VitC))
+
+# MÁXIMO
+dados_repolhos_c52$Maximo <- c(max(repolhos_c52$Peso),
+                               max(repolhos_c52$VitC))
+
+# AMPLITUDE
+
+dados_repolhos_c52$Amplitude <- c(max(repolhos_c52$Peso) - min(repolhos_c52$Peso),
+                                  max(repolhos_c52$VitC) - min(repolhos_c52$VitC))
+
+# VARIÂNCIA
+dados_repolhos_c52$Variancia <- c(var(repolhos_c52$Peso),
+                                  var(repolhos_c52$VitC))
+
+# DESVIO PADRÃO
+dados_repolhos_c52$Desvio.Padrao <- c(sd(repolhos_c52$Peso),
+                                      sd(repolhos_c52$VitC))
+
+# COEFICIENTE DE VARIAÇÃO
+
+dados_repolhos_c52$Coef.Variacao <- c((sd(repolhos_c52$Peso)*100)/mean(repolhos_c52$Peso),
+                                      (sd(repolhos_c52$VitC)*100)/mean(repolhos_c52$VitC))
 
 
 
-?summary()
-?apply()
+# FIM RESUMO DE C52
+
+# IMPRESSÃO DOS RESUMOS DE MEDIDAS DE C39 E C52
+
+print(dados_repolhos_c39)
+print(dados_repolhos_c52)
+
+# GRÁFICOS 
 
 
-
-#Plotagem dos gráficos
 library(ggplot2)
 
-barplot(repolhos$VitC)
+# Gráfico de Barras
 
-table(repolhos)
+barplot(table(repolhos$Cult),
+        col = c("#a1e9f0", "#d9b1f0"),
+        xlab = "Cult",
+        ylab = "Frequencia",
+        main = "Imagem 2 - Gráfico de Barras Variável Cult ")
 
-plot(repolhos$Cult)
+# Histograma
 
-hist(repolhos$Peso,main= NULL,
-     breaks = seq(0.0,5,0.5))
+hist(repolhos$Peso,
+     col = c("#b9e38d"),
+     main = "Imagem 3 - Histograma Variável Peso")
 
-hist(repolhos$VitC,main= NULL,
-     breaks = seq(41,84,1))
+hist(repolhos$VitC,
+     col = c("#b9e38d"),
+     main = "Imagem 4 - Histograma Variável VitC")
+
+
+# Box-plot
+# Verificar outliers
+
+boxplot(repolhos$Peso,
+        col = c("#b9e38d"),
+        main = "Imagem 5 - Diagrama de Caixa Peso")
+
+boxplot(repolhos$VitC,
+        col = c("#b9e38d"),
+        main = "Imagem 6 - Diagrama de VitC")
+
+# Distribuição de dados
+
+par(mfrow = c(1,3))
+qqnorm(repolhos$Peso[repolhos$Cult == "c39"],col = "blue", main = "Imagem 7 - Peso C39")
+qqline(repolhos$Peso[repolhos$Cult == "c39"])
+
+par(mfrow = c(1,3))
+qqnorm(repolhos$VitC[repolhos$Cult == "c39"],col = "blue", main = "Imagem 8 - VitC C39")
+qqline(repolhos$VitC[repolhos$Cult == "c39"])
+
+
+par(mfrow = c(1,3))
+qqnorm(repolhos$Peso[repolhos$Cult == "c52"],col = "#6c043a", main = "Imagem 9 - Peso C52")
+qqline(repolhos$Peso[repolhos$Cult == "c52"])
+
+par(mfrow = c(1,3))
+qqnorm(repolhos$VitC[repolhos$Cult == "c52"],col = "#6c043a", main = "Imagem 10 - VitC C52")
+qqline(repolhos$VitC[repolhos$Cult == "c52"])
+
+
+# CORRELAÇÃO E REGRESSÃO
+
 
 
 #Imagem 1
