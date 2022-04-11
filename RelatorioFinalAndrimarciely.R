@@ -24,11 +24,12 @@ repolhos <- data.frame(read.table("repolhos.csv", header = TRUE, sep =";", dec =
 print(repolhos)
 
 
-dados_repolhos <- data.frame(matrix(nrow = 2,ncol = 8), row.names = c("Peso", "VitC"))
+dados_repolhos <- data.frame(row.names = c("Peso", "VitC"))
 
-colnames(dados_repolhos) <- c("Média", "Mediana","Mínimo", "Máximo", "Amplitude Total", 
-                            "Variância","Desvio Padrão","Coef. Var. (%)") 
+#colnames(dados_repolhos) <- c("Media", "Mediana","Mínimo", "Maximo", "AmpTotal", 
+#                            "Variancia","DesvioPadrão","CoefVar") 
 print(dados_repolhos)
+
 
 
 # OBTENÇÃO DOS DADOS DA SEÇÃO 2.2 MEDIDAS DE RESUMO
@@ -39,61 +40,46 @@ print("A respeito das 60 amostras de cultivo de repolho, temos que:")
 # TABELA 1
 
 # MÉDIA
-print("A média de peso é:")
 
-print(mean(repolhos$Peso))
-print("A média de Vitamina C é:")
-print(mean(repolhos$VitC))
+dados_repolhos$Media <- c(mean(repolhos$Peso),
+                          mean(repolhos$VitC))
 
 # MEDIANA
-print("A mediana do peso é:")
-print(median(repolhos$Peso, na.rm = FALSE))
-print("A mediana da Vitamina C é:")
-print(median(repolhos$VitC, na.rm = FALSE))
+
+dados_repolhos$Mediana <- c(median(repolhos$Peso, na.rm = FALSE),
+                            median(repolhos$VitC, na.rm = FALSE))
 
 # MÍNIMO
-print("O mínimo do peso é:")
-print(min(repolhos$Peso))
 
-print("O mínimo da Vitamina C é:")
-print(min(repolhos$VitC))
+dados_repolhos$Minimo <- c(min(repolhos$Peso),
+                               min(repolhos$VitC))
 
 # MÁXIMO
-print("O máximo do peso é:")
-print(max(repolhos$Peso))
-
-print("O máximo da Vitamina C é:")
-print(max(repolhos$VitC))
+dados_repolhos$Maximo <- c(max(repolhos$Peso),
+                           max(repolhos$VitC))
 
 # AMPLITUDE
-print("A amplitude do peso é:")
-print(max(repolhos$Peso) - min(repolhos$Peso))
 
-print("A amplitude da Vitamina C é:")
-print(max(repolhos$VitC) - min(repolhos$VitC))
+dados_repolhos$Amplitude <- c(max(repolhos$Peso) - min(repolhos$Peso),
+                              max(repolhos$VitC) - min(repolhos$VitC))
 
 # VARIÂNCIA
-print("A variancia do Peso é:")
-print(var(repolhos$Peso))
-
-print("A variancia de VitC é:")
-print(var(repolhos$VitC))
+dados_repolhos$Variancia <- c(var(repolhos$Peso),
+                              var(repolhos$VitC))
 
 # DESVIO PADRÃO
-print("O desvio padrão do Peso é:")
-print(sd(repolhos$Peso))
+dados_repolhos$Desvio.Padrao <- c(sd(repolhos$Peso),
+                              sd(repolhos$VitC))
 
-print("O desvio padrão de VitC é:")
-print(sd(repolhos$VitC))
+print(dados_repolhos)
 
 # COEFICIENTE DE VARIAÇÃO
-print("O coeficiente de variação do Peso é (%):")
-cvPeso = (sd(repolhos$Peso)*100)/mean(repolhos$Peso)
-print(cvPeso)
 
-print("O coeficiente de variação de VitC é (%):")
-cvVitC = (sd(repolhos$VitC)*100)/mean(repolhos$VitC) 
-print(cvVitC)
+dados_repolhos$Coef.Variacao <- c((sd(repolhos$Peso)*100)/mean(repolhos$Peso),
+                                  (sd(repolhos$VitC)*100)/mean(repolhos$VitC))
+
+print(dados_repolhos)
+
 
 # TABELA 2 MODA 
 
@@ -134,9 +120,15 @@ print(summary(repolhos))
 
 # DIVISÃO DOS DADOS EM DOIS GRUPOS 
 
-repolhoS_c39 <- filter(repolhos, repolhos$Cult == "c39")
+repolhos_c39 <- subset.data.frame(repolhos, repolhos$Cult == "c39", select = c("Peso", "VitC"))
 
-print(table(repolhos$Cult))
+print(repolhos_c39)
+
+repolhos_c52 <- subset.data.frame(repolhos, repolhos$Cult == "c52", select = c("Peso", "VitC"))
+
+print(repolhos_c52)
+
+
 
 #Histograma
 
@@ -145,7 +137,6 @@ cbind(classes)
 hist(classes)
 
 
-print(repolho_c39)
 
 ?summary()
 ?apply()
